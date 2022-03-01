@@ -1,34 +1,54 @@
 // https://openapi.programming-hero.com/api/phones?search=${searchText}
 // https://openapi.programming-hero.com/api/phone/${id}
 
+// Selecting HTML Element BY DOM
+
 const phoneContainer = document.getElementById("phone-container");
 const emptyState = document.getElementById("empty-state");
 const spinner = document.getElementById("spinner");
+const showMoreBtn = document.getElementById("show-more-btn");
+// Search Phone
 
 const searchPhone = () => {
   showElement(spinner, true);
-  setTimeout(function () {
-    console.log("I am the third log after 5 seconds");
-  }, 5000);
 
   const inputField = document.getElementById("input-search");
   const inputText = inputField.value;
   fetch(`https://openapi.programming-hero.com/api/phones?search=${inputText}`)
     .then((res) => res.json())
     .then((result) => showPhone(result));
-
-  // showElement(spinner, false);
 };
+
+// Show Phone In HTML
+
 const showPhone = (result) => {
   removeAllChild(phoneContainer);
+  showElement(showMoreBtn, false);
+
+  const totalResult = result.data.length;
+  console.log(totalResult);
+
   if (result.status) {
     showElement(emptyState, false);
+    if (totalResult > 20) {
+      printPhoneLoop(result.data, 0, 20);
+      showElement(showMoreBtn, true);
+    } else {
+      printPhoneLoop(result.data, 0, totalResult);
+    }
+  } else {
+    showElement(emptyState, true);
+  }
+  showElement(spinner, false);
+};
 
-    // console.log(result.data);
-    result.data.forEach((phone) => {
-      const div = document.createElement("div");
-      div.classList.add("col");
-      div.innerHTML = `
+// Print Phone Card
+const printPhoneLoop = (phones, startInd, amount) => {
+  for (let i = startInd; i < amount; i++) {
+    const phone = phones[i];
+    const div = document.createElement("div");
+    div.classList.add("col");
+    div.innerHTML = `
         <div class="p-4 shadow-sm bg-body rounded rounded-3">
             <div class="bg-light">
               <img
@@ -48,14 +68,8 @@ const showPhone = (result) => {
             </button>
           </div>
       `;
-      phoneContainer.appendChild(div);
-    });
-  } else {
-    console.log("empty");
-    showElement(emptyState, true);
+    phoneContainer.appendChild(div);
   }
-  console.log(result);
-  showElement(spinner, false);
 };
 
 // Toggle Visibility
@@ -63,14 +77,15 @@ const showPhone = (result) => {
 const showElement = (element, isVisible) => {
   if (isVisible) {
     element.classList.remove("d-none");
-    console.log(element, isVisible);
+    // console.log(element, isVisible);
   } else {
     element.classList.add("d-none");
-    console.log(element, isVisible);
+    // console.log(element, isVisible);
   }
 };
 
 // Remove Child Nodes
+
 const removeAllChild = (parent) => {
   var first = parent.firstElementChild;
   while (first) {
