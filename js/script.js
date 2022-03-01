@@ -49,6 +49,7 @@ const showPhone = (result) => {
 };
 
 // Print Phone Card
+
 const printPhoneLoop = (phones, startInd, endInd) => {
   for (let i = startInd; i < endInd; i++) {
     const phone = phones[i];
@@ -68,7 +69,7 @@ const printPhoneLoop = (phones, startInd, endInd) => {
               type="button"
               class="btn btn-outline-primary d-block w-75 mx-auto py-2 fw-bold"
               data-bs-toggle="modal"
-              data-bs-target="#foodDetails53043"
+              data-bs-target="#phoneDetails"
             >
               View Details
             </button>
