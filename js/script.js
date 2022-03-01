@@ -7,7 +7,7 @@ const phoneContainer = document.getElementById("phone-container");
 const emptyState = document.getElementById("empty-state");
 const spinner = document.getElementById("spinner");
 const showAllBtn = document.getElementById("show-all-btn");
-
+const modalBody = document.getElementById("modal-body");
 // Search Phone
 
 const searchPhone = () => {
@@ -67,6 +67,8 @@ const printPhoneLoop = (phones, startInd, endInd) => {
             <h5 class="text-center mb-4 text-secondary">${phone.brand}</h5>
             <button
               type="button"
+              onclick="showDetails('${phone.slug}')"
+              id="show-details-btn"
               class="btn btn-outline-primary d-block w-75 mx-auto py-2 fw-bold"
               data-bs-toggle="modal"
               data-bs-target="#phoneDetails"
@@ -76,6 +78,96 @@ const printPhoneLoop = (phones, startInd, endInd) => {
           </div>
       `;
     phoneContainer.appendChild(div);
+  }
+};
+
+// Get Phone Data By Id
+const showDetails = (id) => {
+  showElement(spinner, true);
+  removeAllChild(modalBody);
+  const url = `https://openapi.programming-hero.com/api/phone/${id}`;
+  fetch(url)
+    .then((res) => res.json())
+    .then((result) => showModal(result.data));
+};
+
+// Showing Modal Window
+const showModal = (phone) => {
+  console.log(phone);
+  const mContainer = document.createElement("div");
+  mContainer.classList.add("container");
+  mContainer.innerHTML = `
+    
+                <div class="row gx-0 gx-lg-5 gy-5">
+                  <div class="col col-12 col-lg-5">
+                    <div class="bg-light">
+                      <img
+                        class="d-block w-75 p-4 mx-auto"
+                        src="${phone.image}"
+                        alt="Phone Image"
+                      />
+                    </div>
+                  </div>
+                  <div class="col col-12 col-lg-7">
+                    <h2>${phone.name}</h2>
+                    <p class="text-primary text-capitalize">
+                      ${
+                        phone.releaseDate
+                          ? phone.releaseDate
+                          : "Release Date Not Found"
+                      }
+                    </p>
+                    <hr />
+                    <table class="table table-striped table-bordered">
+                      <h5 class="text-secondary fw-bold mt-4 mb-3">
+                        Main Features
+                      </h5>
+                      <tbody>
+                      ${printSpecs(phone.mainFeatures)}
+                      </tbody>
+                    </table>
+                    <table class="table table-striped table-bordered">
+                      <h5 class="text-secondary fw-bold mt-4 mb-3">
+                        Other Features
+                      </h5>
+                      <tbody>
+                      ${printSpecs(phone.others)}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              
+  `;
+  showElement(spinner, false);
+
+  modalBody.appendChild(mContainer);
+};
+
+// Print Specs in Table
+
+const printSpecs = (specs) => {
+  let tRows = "";
+  if (!specs) {
+    return "No Other Feature Found";
+  } else {
+    for (const spec in specs) {
+      if (Array.isArray(specs[spec])) {
+        tRows += `
+        <tr>
+            <th class="text-capitalize pe-5 ps-3">${spec}</th>
+            <td>${specs[spec].join(", ")}</td>
+        </tr>
+      `;
+      } else {
+        tRows += `
+        <tr>
+            <th class="text-capitalize pe-5 ps-3">${spec}</th>
+            <td>${specs[spec]}</td>
+        </tr>
+      `;
+      }
+    }
+    return tRows;
   }
 };
 
@@ -109,3 +201,5 @@ document.addEventListener("keyup", function (event) {
     document.getElementById("button-search").click();
   }
 });
+
+// document.getElementById("show-details-btn").click();
