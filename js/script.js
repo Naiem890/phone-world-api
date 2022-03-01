@@ -16,7 +16,6 @@ const searchPhone = () => {
   const inputField = document.getElementById("input-search");
   const inputText = inputField.value.toLowerCase();
   inputField.value = "";
-  console.log(inputText);
   fetch(`https://openapi.programming-hero.com/api/phones?search=${inputText}`)
     .then((res) => res.json())
     .then((result) => showPhone(result));
@@ -37,7 +36,6 @@ const showPhone = (result) => {
       printPhoneLoop(result.data, 0, 20);
       showElement(showAllBtn, true);
       showAllBtn.addEventListener("click", function () {
-        console.log("showing more");
         printPhoneLoop(result.data, 20, totalResult);
         showElement(showAllBtn, false);
       });
@@ -51,8 +49,8 @@ const showPhone = (result) => {
 };
 
 // Print Phone Card
-const printPhoneLoop = (phones, startInd, amount) => {
-  for (let i = startInd; i < amount; i++) {
+const printPhoneLoop = (phones, startInd, endInd) => {
+  for (let i = startInd; i < endInd; i++) {
     const phone = phones[i];
     const div = document.createElement("div");
     div.classList.add("col");
