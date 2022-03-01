@@ -6,14 +6,17 @@
 const phoneContainer = document.getElementById("phone-container");
 const emptyState = document.getElementById("empty-state");
 const spinner = document.getElementById("spinner");
-const showMoreBtn = document.getElementById("show-more-btn");
+const showAllBtn = document.getElementById("show-all-btn");
+
 // Search Phone
 
 const searchPhone = () => {
   showElement(spinner, true);
 
   const inputField = document.getElementById("input-search");
-  const inputText = inputField.value;
+  const inputText = inputField.value.toLowerCase();
+  inputField.value = "";
+  console.log(inputText);
   fetch(`https://openapi.programming-hero.com/api/phones?search=${inputText}`)
     .then((res) => res.json())
     .then((result) => showPhone(result));
@@ -23,7 +26,7 @@ const searchPhone = () => {
 
 const showPhone = (result) => {
   removeAllChild(phoneContainer);
-  showElement(showMoreBtn, false);
+  showElement(showAllBtn, false);
 
   const totalResult = result.data.length;
   console.log(totalResult);
@@ -32,7 +35,12 @@ const showPhone = (result) => {
     showElement(emptyState, false);
     if (totalResult > 20) {
       printPhoneLoop(result.data, 0, 20);
-      showElement(showMoreBtn, true);
+      showElement(showAllBtn, true);
+      showAllBtn.addEventListener("click", function () {
+        console.log("showing more");
+        printPhoneLoop(result.data, 20, totalResult);
+        showElement(showAllBtn, false);
+      });
     } else {
       printPhoneLoop(result.data, 0, totalResult);
     }
