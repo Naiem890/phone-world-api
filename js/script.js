@@ -3,12 +3,21 @@
 
 const phoneContainer = document.getElementById("phone-container");
 const emptyState = document.getElementById("empty-state");
+const spinner = document.getElementById("spinner");
+
 const searchPhone = () => {
+  showElement(spinner, true);
+  setTimeout(function () {
+    console.log("I am the third log after 5 seconds");
+  }, 5000);
+
   const inputField = document.getElementById("input-search");
   const inputText = inputField.value;
   fetch(`https://openapi.programming-hero.com/api/phones?search=${inputText}`)
     .then((res) => res.json())
     .then((result) => showPhone(result));
+
+  // showElement(spinner, false);
 };
 const showPhone = (result) => {
   removeAllChild(phoneContainer);
@@ -46,6 +55,7 @@ const showPhone = (result) => {
     showElement(emptyState, true);
   }
   console.log(result);
+  showElement(spinner, false);
 };
 
 // Toggle Visibility
@@ -56,6 +66,7 @@ const showElement = (element, isVisible) => {
     console.log(element, isVisible);
   } else {
     element.classList.add("d-none");
+    console.log(element, isVisible);
   }
 };
 
@@ -71,6 +82,7 @@ const removeAllChild = (parent) => {
 // Add event listener for enter key
 
 document.addEventListener("keyup", function (event) {
+  event.preventDefault();
   if (event.keyCode === 13) {
     document.getElementById("button-search").click();
   }
