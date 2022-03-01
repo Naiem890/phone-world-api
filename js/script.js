@@ -2,7 +2,7 @@
 // https://openapi.programming-hero.com/api/phone/${id}
 
 const phoneContainer = document.getElementById("phone-container");
-
+const emptyState = document.getElementById("empty-state");
 const searchPhone = () => {
   const inputField = document.getElementById("input-search");
   const inputText = inputField.value;
@@ -11,9 +11,11 @@ const searchPhone = () => {
     .then((result) => showPhone(result));
 };
 const showPhone = (result) => {
+  removeAllChild(phoneContainer);
   if (result.status) {
+    showElement(emptyState, false);
+
     // console.log(result.data);
-    removeAllChild(phoneContainer);
     result.data.forEach((phone) => {
       const div = document.createElement("div");
       div.classList.add("col");
@@ -39,8 +41,22 @@ const showPhone = (result) => {
       `;
       phoneContainer.appendChild(div);
     });
+  } else {
+    console.log("empty");
+    showElement(emptyState, true);
   }
   console.log(result);
+};
+
+// Toggle Visibility
+
+const showElement = (element, isVisible) => {
+  if (isVisible) {
+    element.classList.remove("d-none");
+    console.log(element, isVisible);
+  } else {
+    element.classList.add("d-none");
+  }
 };
 
 // Remove Child Nodes
