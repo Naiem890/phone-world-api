@@ -29,7 +29,7 @@ const showPhone = (result) => {
       const div = document.createElement("div");
       div.classList.add("col");
       div.innerHTML = `
-        <div class="p-4 shadow bg-body rounded rounded-3">
+        <div class="p-4 shadow-sm bg-body rounded rounded-3">
             <div class="bg-light">
               <img
                 class="img-fluid mx-auto w-50 d-block py-4"
