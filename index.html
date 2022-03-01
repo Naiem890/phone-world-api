@@ -15,9 +15,9 @@
     />
   </head>
   <body>
-    <h1 class="my-5 text-center">Phone World 📱</h1>
+    <h1 class="mt-5 mb-4 text-center">Phone World 📱</h1>
 
-    <div class="input-group mb-3 w-50 mx-auto">
+    <div class="input-group my-3 w-75 mx-auto">
       <input
         type="text"
         id="input-search"
@@ -36,24 +36,14 @@
       </button>
     </div>
 
-    <div class="container mt-5">
+    <section class="container my-4">
       <div
         id="phone-container"
-        class="row row-cols-md-4 row-cols-sm-2 row-cols-1 g-4"
+        class="row row-cols-md-3 row-cols-sm-2 row-cols-1 g-5"
       ></div>
-    </div>
-
-    <section id="modal-container" class="container">
-      <!-- <button
-        type="button"
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#foodDetails"
-      >
-        Launch demo modal
-      </button> -->
-      <!-- Modal -->
     </section>
+
+    <section id="modal-container" class="container"></section>
 
     <!-- Bootstrap JS -->
     <script
@@ -62,6 +52,6 @@
       crossorigin="anonymous"
     ></script>
 
-    <script src="script.js"></script>
+    <script src="js/script.js"></script>
   </body>
 </html>
